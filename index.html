@@ -167,23 +167,75 @@ function showChat() {
         onkeydown="if(event.key==='Enter') sendMessage()">
         <button class="send" onclick="sendMessage()">Send</button>
     `;
-}
+}.let zenovaMessages = [];
 
-function sendMessage() {
-    let input = document.getElementById("message");
-    let message = input.value.trim();
+async function sendMessage() {
+    const input = document.getElementById("message");
+    const chat = document.getElementById("chat");
 
-    if (message === "") return;
+    const message = input.value.trim();
 
-    let chat = document.getElementById("chat");
+    if (!message) return;
 
-    let userMessage = document.createElement("p");
-    userMessage.innerHTML = "<b>You:</b> ";
-    userMessage.appendChild(document.createTextNode(message));
+    // Show user message
+    const userMessage = document.createElement("p");
+    userMessage.textContent = "You: " + message;
     chat.appendChild(userMessage);
 
-    let question = message.toLowerCase();
-    let reply = "I am still learning! Try asking me a science question.";
+    input.value = "";
+
+    // Save conversation history
+    zenovaMessages.push({
+        role: "user",
+        content: message
+    });
+
+    // Show loading message
+    const loading = document.createElement("p");
+    loading.textContent = "ZENOVA is thinking...";
+    chat.appendChild(loading);
+
+    try {
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                messages: zenovaMessages
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "AI connection failed");
+        }
+
+        const reply = data.reply;
+
+        // Save AI response
+        zenovaMessages.push({
+            role: "assistant",
+            content: reply
+        });
+
+        // Display AI response
+        loading.textContent = "ZENOVA: " + reply;
+
+    } catch (error) {
+        console.error(error);
+
+        loading.textContent =
+            "ZENOVA: Connection error. Please try again.";
+
+        zenovaMessages.pop();
+    }
+
+    chat.scrollTop = chat.scrollHeight;
+}
+
+";
 
     if (question.includes("hello") || question.includes("hi")) {
         reply = "Hello! Welcome to ZENOVA AI!";
