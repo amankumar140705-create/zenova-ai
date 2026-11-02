@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ZENOVA AI</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #101827;
+    color: white;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 210px;
+    background: #080f1c;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    color: #38bdf8;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    margin: 12px 0;
+    background: #17263a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sidebar button:hover {
+    background: #0284c7;
+}
+
+.main {
+    flex: 1;
+    padding: 25px;
+    min-width: 0;
+}
+
+.card {
+    background: #1b293b;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+#chat {
+    height: 300px;
+    overflow-y: auto;
+    background: #101827;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+input {
+    padding: 13px;
+    border-radius: 8px;
+    border: none;
+    margin: 5px 0;
+    max-width: 100%;
+}
+
+#message {
+    width: 72%;
+}
+
+.send {
+    padding: 13px;
+    background: #0284c7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+@media(max-width: 600px) {
+    .container {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .sidebar button {
+        display: inline-block;
+        width: auto;
+        margin: 5px 2px;
+    }
+
+    .main {
+        padding: 15px;
+    }
+
+    #message {
+        width: 65%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="sidebar">
+        <h2>ZENOVA AI</h2>
+        <p>Your Personal Assistant</p>
+
+        <button onclick="showHome()">🏠 Home</button>
+        <button onclick="showChat()">💬 AI Chat</button>
+        <button onclick="showScience()">📚 Science</button>
+        <button onclick="showCalculator()">🔢 Calculator</button>
+        <button onclick="showSettings()">⚙️ Settings</button>
+    </div>
+
+    <div class="main">
+        <h1>Welcome to ZENOVA AI</h1>
+        <p>Your friendly AI assistant.</p>
+
+        <div class="card" id="content">
+            <h2>How can I help you today?</h2>
+            <p>Select a feature from the sidebar.</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+let userName = "";
+
+function showHome() {
+    document.getElementById("content").innerHTML = `
+        <h2>Welcome Home!</h2>
+        <p>ZENOVA AI is ready to assist you.</p>
+        <p>Choose a feature from the sidebar.</p>
+    `;
+}
+
+function showChat() {
+    document.getElementById("content").innerHTML = `
+        <h2>💬 ZENOVA AI Chat</h2>
+        <div id="chat">
+            <p><b>ZENOVA:</b> Hello! How can I help you?</p>
+        </div>
+        <input id="message" placeholder="Type your message..."
+        onkeydown="if(event.key==='Enter') sendMessage()">
+        <button class="send" onclick="sendMessage()">Send</button>
+    `;
+}
+
+function sendMessage() {
+
+    let input = document.getElementById("message");
+    let message = input.value.trim();
+
+    if (message === "") return;
+
+    let chat = document.getElementById("chat");
+
+    let userMessage = document.createElement("p");
+    userMessage.innerHTML = "<b>You:</b> ";
+    userMessage.appendChild(document.createTextNode(message));
+    chat.appendChild(userMessage);
+
+    let question = message.toLowerCase();
+    let reply = "I am still learning! Try asking me a science question.";
+
+    if (question.includes("hello") || question.includes("hi")) {
+        reply = "Hello! Welcome to ZENOVA AI!";
+    }
+    else if (question.includes("your name")) {
+        reply = "My name is ZENOVA AI, your friendly assistant.";
+    }
+    else if (question.startsWith("my name is ")) {
+        userName = message.substring(11).trim();
+        reply = "Nice to meet you, " + userName + "!";
+    }
+    else if (question.includes("what is my name")) {
+        reply = userName ? "Your name is " + userName + "." :
+        "You haven't told me your name yet.";
+    }
+    else if (question.includes("photosynthesis")) {
+        reply = "Photosynthesis is the process by which green plants prepare food using sunlight, water and carbon dioxide.";
+    }
+    else if (question.includes("newton")) {
+        reply = "Isaac Newton gave the three famous laws of motion.";
+    }
+    else if (question.includes("electricity")) {
+        reply = "Electric current is the rate of flow of electric charge.";
+    }
+    else if (question.includes("who created you")) {
+        reply = "I am being built by my creator!";
+    }
+    else if (question.includes("how are you")) {
+        reply = "I am doing great! Ready to help you.";
+    }
+
+    let botMessage = document.createElement("p");
+    botMessage.innerHTML = "<b>ZENOVA:</b> ";
+    botMessage.appendChild(document.createTextNode(reply));
+    chat.appendChild(botMessage);
+
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function showScience() {
+    document.getElementById("content").innerHTML = `
+        <h2>📚 Science Assistant</h2>
+        <p>Welcome to your Science Learning Centre!</p>
+        <p>⚡ Physics</p>
+        <p>🧪 Chemistry</p>
+        <p>🧬 Biology</p>
+        <p>More science features coming soon.</p>
+    `;
+}
+
+function showCalculator() {
+    document.getElementById("content").innerHTML = `
+        <h2>🔢 Calculator</h2>
+        <input type="number" id="num1" placeholder="First number">
+        <input type="number" id="num2" placeholder="Second number">
+        <br>
+        <button class="send" onclick="calculate()">Add</button>
+        <p id="result"></p>
+    `;
+}
+
+function calculate() {
+    let a = Number(document.getElementById("num1").value);
+    let b = Number(document.getElementById("num2").value);
+
+    document.getElementById("result").innerText =
+        "Result: " + (a + b);
+}
+
+function showSettings() {
+    document.getElementById("content").innerHTML = `
+        <h2>⚙️ Settings</h2>
+        <p>App Name: ZENOVA AI</p>
+        <p>Version: 1.0</p>
+        <p>Personality: Friendly</p>
+        <p>Creator: You!</p>
+    `;
+}
+
+</script>
+
+</body>
+</html>
