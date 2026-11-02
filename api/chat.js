@@ -1,4 +1,6 @@
-module.exports = async function handler(req, res) {
+module.exports = async function handler(req, res) {if (req.headers["x-zenova-access"] !== process.env.ZENOVA_ACCESS_CODE) {
+  return res.status(401).json({ error: "Unauthorized" });
+}
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
