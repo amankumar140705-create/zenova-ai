@@ -166,10 +166,7 @@ function showChat() {
         <input id="message" placeholder="Type your message..."
         onkeydown="if(event.key==='Enter') sendMessage()">
         <button class="send" onclick="sendMessage()">Send</button>
-    `;
-}
-
-function sendMessage() {
+    function sendMessage() {
 
     let input = document.getElementById("message");
     let message = input.value.trim();
@@ -187,7 +184,10 @@ function sendMessage() {
     let reply = "I am still learning! Try asking me a science question.";
 
     if (question.includes("hello") || question.includes("hi")) {
-        reply = "Hello! Welcome to ZENOVA AI!";
+        reply = "Hello! Welcome to ZENOVA AI!";;
+}
+
+
     }
     else if (question.includes("your name")) {
         reply = "My name is ZENOVA AI, your friendly assistant.";
