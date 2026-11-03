@@ -171,6 +171,24 @@ function showChat() {
 
 let zenovaMessages = [];
 
+function showChat() {
+    document.getElementById("content").innerHTML = `
+        <h2>💬 ZENOVA AI Chat</h2>
+
+        <div id="chat">
+            <p><b>ZENOVA:</b> Hello! How can I help you?</p>
+        </div>
+
+        <input
+            id="message"
+            placeholder="Type your message..."
+            onkeydown="if(event.key==='Enter') sendMessage()"
+        >
+
+        <button class="send" onclick="sendMessage()">Send</button>
+    `;
+}
+
 async function sendMessage() {
     const input = document.getElementById("message");
     const chat = document.getElementById("chat");
@@ -179,34 +197,34 @@ async function sendMessage() {
 
     if (!message) return;
 
-    // Show user message
     const userMessage = document.createElement("p");
     userMessage.textContent = "You: " + message;
     chat.appendChild(userMessage);
 
     input.value = "";
 
-    // Save conversation history
     zenovaMessages.push({
         role: "user",
         content: message
     });
 
-    // Show loading message
     const loading = document.createElement("p");
     loading.textContent = "ZENOVA is thinking...";
     chat.appendChild(loading);
 
-    try
-    const response = await fetch("https://zenova-ai-zeta.vercel.app/api/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                messages: zenovaMessages
-            })
-        });
+    try {
+        const response = await fetch(
+            "https://zenova-ai-zeta.vercel.app/api/chat",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    messages: zenovaMessages
+                })
+            }
+        );
 
         const data = await response.json();
 
@@ -216,13 +234,11 @@ async function sendMessage() {
 
         const reply = data.reply;
 
-        // Save AI response
         zenovaMessages.push({
             role: "assistant",
             content: reply
         });
 
-        // Display AI response
         loading.textContent = "ZENOVA: " + reply;
 
     } catch (error) {
@@ -232,6 +248,16 @@ async function sendMessage() {
             "ZENOVA: Connection error. Please try again.";
 
         zenovaMessages.pop();
+    }
+
+    chat.scrollTop = chat.scrollHeight ;
+    
+
+
+        
+            
+
+
     }
 
     
