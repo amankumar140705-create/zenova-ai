@@ -1,153 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>ZENOVA AI</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #101827;
-    color: white;
-}
-
-.container {
-    display: flex;
-    min-height: 100vh;
-}
-
-.sidebar {
-    width: 210px;
-    background: #080f1c;
-    padding: 20px;
-}
-
-.sidebar h2 {
-    color: #38bdf8;
-}
-
-.sidebar button {
-    display: block;
-    width: 100%;
-    padding: 13px;
-    margin: 12px 0;
-    background: #17263a;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    text-align: left;
-    cursor: pointer;
-}
-
-.sidebar button:hover {
-    background: #0284c7;
-}
-
-.main {
-    flex: 1;
-    padding: 25px;
-    min-width: 0;
-}
-
-.card {
-    background: #1b293b;
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 20px;
-}
-
-#chat {
-    height: 300px;
-    overflow-y: auto;
-    background: #101827;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-input {
-    padding: 13px;
-    border-radius: 8px;
-    border: none;
-    margin: 5px 0;
-    max-width: 100%;
-}
-
-#message {
-    width: 72%;
-}
-
-.send {
-    padding: 13px;
-    background: #0284c7;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-@media(max-width: 600px) {
-    .container {
-        display: block;
-    }
-
-    .sidebar {
-        width: 100%;
-    }
-
-    .sidebar button {
-        display: inline-block;
-        width: auto;
-        margin: 5px 2px;
-    }
-
-    .main {
-        padding: 15px;
-    }
-
-    #message {
-        width: 65%;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <div class="sidebar">
-        <h2>ZENOVA AI</h2>
-        <p>Your Personal Assistant</p>
-
-        <button onclick="showHome()">🏠 Home</button>
-        <button onclick="showChat()">💬 AI Chat</button>
-        <button onclick="showScience()">📚 Science</button>
-        <button onclick="showCalculator()">🔢 Calculator</button>
-        <button onclick="showSettings()">⚙️ Settings</button>
-    </div>
-
-    <div class="main">
-        <h1>Welcome to ZENOVA AI</h1>
-        <p>Your friendly AI assistant.</p>
-
-        <div class="card" id="content">
-            <h2>How can I help you today?</h2>
-            <p>Select a feature from the sidebar.</p>
-        </div>
-    </div>
-
-</div>
-
 <script>
 
 let userName = "";
+let zenovaMessages = [];
 
 function showHome() {
     document.getElementById("content").innerHTML = `
@@ -156,20 +10,6 @@ function showHome() {
         <p>Choose a feature from the sidebar.</p>
     `;
 }
-
-function showChat() {
-    document.getElementById("content").innerHTML = `
-        <h2>💬 ZENOVA AI Chat</h2>
-        <div id="chat">
-            <p><b>ZENOVA:</b> Hello! How can I help you?</p>
-        </div>
-        <input id="message" placeholder="Type your message..."
-        onkeydown="if(event.key==='Enter') sendMessage()">
-        <button class="send" 
-
-        }
-
-let zenovaMessages = [];
 
 function showChat() {
     document.getElementById("content").innerHTML = `
@@ -194,7 +34,6 @@ async function sendMessage() {
     const chat = document.getElementById("chat");
 
     const message = input.value.trim();
-
     if (!message) return;
 
     const userMessage = document.createElement("p");
@@ -243,24 +82,12 @@ async function sendMessage() {
 
     } catch (error) {
         console.error(error);
-
         loading.textContent =
             "ZENOVA: Connection error. Please try again.";
 
         zenovaMessages.pop();
     }
 
-    chat.scrollTop = chat.scrollHeight ;
-    
-
-
-        
-            
-
-
-    }
-
-    
     chat.scrollTop = chat.scrollHeight;
 }
 
@@ -305,6 +132,3 @@ function showSettings() {
 }
 
 </script>
-
-</body>
-</html>
